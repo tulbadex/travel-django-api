@@ -18,6 +18,7 @@ User = get_user_model()
 class BookingModelTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
+            username='testuser',
             email='test@example.com',
             password='testpass123'
         )
@@ -42,6 +43,7 @@ class BookingModelTest(TestCase):
 class BookingItemModelTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
+            username='testuser',
             email='test@example.com',
             password='testpass123'
         )
@@ -92,6 +94,7 @@ class BookingItemModelTest(TestCase):
 class BookingIntegrationTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
+            username='testuser',
             email='test@example.com',
             password='testpass123'
         )

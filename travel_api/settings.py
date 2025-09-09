@@ -188,10 +188,30 @@ STATICFILES_DIRS = [
 ]
 
 # Email Configuration
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# Use console backend for debugging: 'django.core.mail.backends.console.EmailBackend'
+import sys
+if 'test' in sys.argv or 'pytest' in sys.modules:
+    EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
+    # Disable email debug output during tests
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'null': {
+                'class': 'logging.NullHandler',
+            },
+        },
+        'loggers': {
+            'accounts.services': {
+                'handlers': ['null'],
+                'level': 'DEBUG',
+                'propagate': False,
+            },
+        },
+    }
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_HOST = config('EMAIL_HOST', default='')
+EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
 EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
 EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
